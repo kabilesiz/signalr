@@ -8,10 +8,10 @@ namespace SignalR.Controllers;
 [Route("api/[controller]")]
 public class ChatController : ControllerBase
 {
-    private readonly ILogger<WeatherForecastController> _logger;
+    private readonly ILogger<ChatController> _logger;
     private readonly ChatBusiness _chatBusiness;
 
-    public ChatController(ILogger<WeatherForecastController> logger, ChatBusiness chatBusiness)
+    public ChatController(ILogger<ChatController> logger, ChatBusiness chatBusiness)
     {
         _logger = logger;
         _chatBusiness = chatBusiness;
@@ -32,9 +32,10 @@ public class ChatController : ControllerBase
             await _chatBusiness.SendMessage(model);
             return Ok();
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            return BadRequest(new {message = e.Message});
+            _logger.LogError(ex, ex.Message);
+            return BadRequest(new {message = ex.Message});
         }
         
     }
